@@ -75,31 +75,6 @@ def page_1():
     fig2.tight_layout()
     st.pyplot(fig2)
 
-    def page_pie_chart():
-    st.title("Proportions by Country")
-
-    # Seletor de ano e item
-    col5, col6 = st.columns(2)
-    with col5:
-        year_selected
-    with col6:
-        item_selected
-
-    # Filtrar os dados
-    filtered_df = dash_df[(dash_df["Year"] == year_selected) & (dash_df["Item"] == item_selected)]
-
-    # Verificar se há dados
-    if filtered_df.empty:
-        st.warning("No data available for the selected year and item.")
-    else:
-        # Calcular proporção
-        filtered_df["Proportion"] = filtered_df["Production"] / filtered_df["Production"].sum()
-
-        # Gráfico de pizza
-        fig = px.pie(filtered_df, values="Proportion", names="Area",
-                     title=f"Proportion of Production by Country in {year_selected} for {item_selected}",
-                     labels={"Proportion": "Proportion"})
-        st.plotly_chart(fig)
 
 page_pie_chart()
 

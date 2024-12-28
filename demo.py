@@ -76,7 +76,7 @@ def page_1():
     lines4, labels4 = ax4.get_legend_handles_labels()
     ax3.legend(lines3 + lines4, labels3 + labels4, loc='upper right')
 
-    plt.title(f"Production, Area Harvested, and Yield in {area_selected_2} for {item_selected_2}")
+    plt.title(f"Production, Area Harvested, and Yield in {area_selected_2} for {item_selected}")
     fig2.tight_layout()
     st.pyplot(fig2)
 

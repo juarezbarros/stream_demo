@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 import plotly.express as px
 
@@ -8,32 +7,41 @@ import plotly.express as px
 st.title("Dashboard")
 
 
-st.sidebar.title("Parameters")
-areas = ["Ireland", "Belgium"]
-items = ["Wheat", "Barley"]
-area_selected = st.sidebar.selectbox("Area", areas)
-item_selected = st.sidebar.selectbox("Item", items)
-
-
+st.sidebar.title("Parametrers")
 combined_df = pd.read_csv('combined_df.csv')
 
 
-st.write("### Production Data", df)
+areas = combined_df["Area"].unique()
+items = combined_df["Item"].unique()
+
+area_selected = st.sidebar.selectbox("Selecione a Área", areas)
+item_selected = st.sidebar.selectbox("Selecione o Item", items)
 
 
-st.write("### Graph1")
-fig, ax = plt.subplots()
-ax.plot(df["Year"], df["Production"], label="Production", marker="o")
-ax.plot(df["Year"], df["Predicted Production"], label="Predicted", linestyle="--", marker="x", color="red")
-ax.set_title(f"Production of {item_selected} em {area_selected}")
-ax.set_xlabel("Year")
-ax.set_ylabel("Production")
-ax.legend()
-st.pyplot(fig)
+filtered_df = combined_df[(combined_df["Area"] == area_selected) & 
+                          (combined_df["Item"] == item_selected)]
 
-# Gráph2
-st.write("### Graph2")
-fig_interactive = px.line(df, x="Year", y=["Production", "Predicted Production"],
-                          title=f"Produção de {item_selected} em {area_selected}",
-                          labels={"value": "Produção", "variable": "Tipo"})
-st.plotly_chart(fig_interactive)
+
+
+    # Graph1
+    st.write("### Gráfico 1")
+    fig, ax = plt.subplots()
+    ax.plot(filtered_df["Year"], filtered_df["Production"], label="Production", marker="o")
+    ax.plot(filtered_df["Year"], filtered_df["Predicted_Production"], label="Predicted Production", 
+            linestyle="--", marker="x", color="red")
+    ax.set_title(f"Produção de {item_selected} em {area_selected}")
+    ax.set_xlabel("Ano")
+    ax.set_ylabel("Produção")
+    ax.legend()
+    st.pyplot(fig)
+
+    # Graph2
+    st.write("### Gráfico 2")
+    fig_interactive = px.line(
+        filtered_df, 
+        x="Year", 
+        y=["Production", "Predicted_Production"],
+        title=f"Produção de {item_selected} em {area_selected}",
+        labels={"value": "Produção", "variable": "Tipo"}
+    )
+    st.plotly_chart(fig_interactive)

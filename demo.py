@@ -36,7 +36,7 @@ def page_1():
     plt.xticks(rotation=45, ha='right')
 
     ax2 = ax1.twinx()
-    ax2.plot(filtered_df_sorted['Area'], filtered_df_sorted['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
+    ax2.plot(filtered_df_sorted['Area'], filtered_df_sorted['Yield'], color='red', marker='o', label='Yield', linestyle='--')
     ax2.set_ylabel('Yield')
 
     lines1, labels1 = ax1.get_legend_handles_labels()
@@ -70,7 +70,7 @@ def page_1():
     ax1.legend()
 
     ax2 = ax1.twinx()  # Adiciona o eixo Y para o Yield
-    ax2.plot(filtered_df_1['Year'], filtered_df_1['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
+    ax2.plot(filtered_df_1['Year'], filtered_df_1['Yield'], color='red', marker='o', label='Yield', linestyle='--')
     ax2.set_ylabel("Yield")
     
     # País 2
@@ -82,7 +82,7 @@ def page_1():
     ax3.legend()
 
     ax4 = ax3.twinx()  # Adiciona o eixo Y para o Yield
-    ax4.plot(filtered_df_2['Year'], filtered_df_2['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
+    ax4.plot(filtered_df_2['Year'], filtered_df_2['Yield'], color='red', marker='o', label='Yield', linestyle='--')
     ax4.set_ylabel("Yield")
 
     # Ajustar layout
@@ -97,5 +97,5 @@ if page == "Page 1":
 elif page == "Pie Chart":
     def page_pie_chart():
         st.title("Proportions by Country")
-        # Resto do código da página de gráfico de pizza...
+        
     page_pie_chart()

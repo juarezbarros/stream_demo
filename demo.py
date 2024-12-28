@@ -6,6 +6,8 @@ url = "https://raw.githubusercontent.com/juarezbarros/stream_demo/main/FAOSTAT_d
 df_dash_eu_total = pd.read_csv(url)
 
 
+df_dash_eu_total.columns = df_dash_eu_total.columns.str.strip()
+
 def page_1():
     st.title("Page 1: Production and Yield Data")
 
@@ -18,9 +20,12 @@ def page_1():
                                    (df_dash_eu_total["Item"] == item_selected)]
 
     
+    st.write(filtered_df.head())
+
+    
     fig, ax1 = plt.subplots(figsize=(10, 6))
 
-    # 'Production' e 'Area harvested'
+    
     ax1.bar(filtered_df['Area'], filtered_df['Production'], color='green', label='Production')
     ax1.bar(filtered_df['Area'], filtered_df['Area harvested'], color='darkorange', label='Area harvested')
     ax1.set_xlabel('Country')
@@ -29,7 +34,7 @@ def page_1():
     
     plt.xticks(rotation=45, ha='right')
 
-    #y  'Yield'
+   
     ax2 = ax1.twinx()
     ax2.plot(filtered_df['Area'], filtered_df['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
     ax2.set_ylabel('Yield')
@@ -51,22 +56,22 @@ def page_1():
     
     st.write("### Production, Area Harvested, and Yield by Year")
     
-    # 'Item' e 'Area' 
+    
     filtered_df_year = df_dash_eu_total[(df_dash_eu_total["Item"] == item_selected)]
 
     
     fig2, ax3 = plt.subplots(figsize=(10, 6))
 
-    # 'Production'  'Area harvested' 
+    
     ax3.bar(filtered_df_year['Year'], filtered_df_year['Production'], color='green', label='Production')
     ax3.bar(filtered_df_year['Year'], filtered_df_year['Area harvested'], color='darkorange', label='Area harvested')
     ax3.set_xlabel('Year')
     ax3.set_ylabel('Production / Area harvested')
 
-    # 
+    
     plt.xticks(rotation=45, ha='right')
 
-    # 'Yield'
+    # Criando o segundo eixo Y para 'Yield'
     ax4 = ax3.twinx()
     ax4.plot(filtered_df_year['Year'], filtered_df_year['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
     ax4.set_ylabel('Yield')

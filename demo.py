@@ -15,7 +15,7 @@ dash_df = df_dash_eu_total.pivot_table(index=['Area', 'Year', 'Item'], columns='
 dash_df = dash_df.sort_values(by=['Area', 'Item', 'Year'])
 
 def page_1():
-    st.title("Page 1: Production and Yield Data")
+    st.title("Production, Harvested and Yield Data")
 
     # Seletor para ano e item
     col1, col2 = st.columns(2)
@@ -119,7 +119,7 @@ def page_pie_chart():
 # Configuração do Streamlit
 page = st.sidebar.radio("Select Page", ["Page 1", "Pie Chart"])
 
-if page == "Page 1":
+if page == "Historical Data":
     page_1()
 elif page == "Pie Chart":
     page_pie_chart()

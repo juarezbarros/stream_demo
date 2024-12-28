@@ -18,8 +18,7 @@ def page_1():
     item_selected = st.sidebar.selectbox("Select Item", df_dash_eu_total["Item"].unique())
 
     
-    filtered_df = dash_df[(dash_df["Area"] == area_selected) & 
-                                   (dash_df["Item"] == item_selected)]
+    filtered_df = dash_df[(dash_df["Item"] == item_selected)]
 
     
     st.write(filtered_df.head())
@@ -59,7 +58,9 @@ def page_1():
     st.write("### Production, Area Harvested, and Yield by Year")
     
     
-    filtered_df_year = df_dash_eu_total[(df_dash_eu_total["Item"] == item_selected)]
+    filtered_df_year = dash_df[(df_dash_eu_total["Area"] == area_selected) & 
+                                   (df_dash_eu_total["Item"] == item_selected)]
+
 
     
     fig2, ax3 = plt.subplots(figsize=(10, 6))

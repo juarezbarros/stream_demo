@@ -3,7 +3,12 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
 
-df_dash_eu_total=pd.read_csv("FAOSTAT_data_en_12_5_2024.csv")
+url = "https://raw.githubusercontent.com/juarezbarros/stream_demo/main/FAOSTAT_data_en_11-25-2024.csv"
+df_dash_eu_total = pd.read_csv(url)
+
+# Exibir os dados
+st.write(df_dash_eu_total)
+
 df_dash_eu_total = df_dash_eu_total[df_dash_eu_total['Item'].isin(['Barley', 'Wheat'])]
 
 dash_df = df_dash_eu_total.pivot_table(index=['Area', 'Year', 'Item'], columns='Element', values='Value', aggfunc='sum'

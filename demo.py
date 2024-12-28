@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
-url = "https://github.com/juarezbarros/stream_demo/blob/main/FAOSTAT_data_en_12_5_2024.csv"
+url = "https://github.com/juarezbarros/stream_demo/blob/main/FAOSTAT_data_en_11-25-2024.csv"
 df_dash_eu_total = pd.read_csv(url)
 
 df_dash_eu_total['Area'] = df_dash_eu_total['Area'].replace({'Netherlands (Kingdom of the)': 'Netherlands'})

@@ -47,7 +47,7 @@ def page_1():
     fig.tight_layout()
     st.pyplot(fig)
 
-   # Comparação de dois países
+    # Comparação de dois países
     st.subheader("Country Comparison")
     col3, col4 = st.columns(2)
     with col3:
@@ -116,13 +116,10 @@ def page_pie_chart():
                      labels={"Proportion": "Proportion"})
         st.plotly_chart(fig)
 
-
 # Configuração do Streamlit
 page = st.sidebar.radio("Select Page", ["Page 1", "Pie Chart"])
+
 if page == "Page 1":
     page_1()
 elif page == "Pie Chart":
-    def page_pie_chart():
-        st.title("Proportions by Country")
-        
     page_pie_chart()

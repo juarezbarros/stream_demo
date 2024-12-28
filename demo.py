@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
-url = "https://raw.githubusercontent.com/juarezbarros/stream_demo/main/FAOSTAT_data_en_11-25-2024.csv"
+url = "https://raw.githubusercontent.com/juarezbarros/stream_demo/main/FAOSTAT_data_en_12_5_2024.csv"
 df_dash_eu_total = pd.read_csv(url)
 
 df_dash_eu_total['Area'] = df_dash_eu_total['Area'].replace({'Netherlands (Kingdom of the)': 'Netherlands'})
@@ -17,10 +17,8 @@ def page_1():
 
 
     col1, col2 = st.columns(2)
-
     with col1:
         year_selected = st.selectbox("Select Year", dash_df["Year"].unique())
-
     with col2:
         item_selected = st.selectbox("Select Item", dash_df["Item"].unique())
 
@@ -68,21 +66,15 @@ def page_1():
     st.pyplot(fig)
 
 
-    col1, col2 = st.columns(2)
-
-    with col1:
+     col3, col4 = st.columns(2)
+    with col3:
         area_selected_2 = st.selectbox("Select Area", dash_df["Area"].unique())
-
-    with col2:
+    with col4:
         item_selected_2 = st.selectbox("Select Item", dash_df["Item"].unique())
 
-    
-    #area_selected_2 = st.selectbox("Select Area for the Second Graph", dash_df["Area"].unique())
-    #item_selected_2 = st.selectbox("Select Item for the Second Graph", dash_df["Item"].unique())
-    
-    
-    filtered_df_year = dash_df[(dash_df["Area"] == area_selected_2) & 
-                               (dash_df["Item"] == item_selected_2)]
+    # Filtrando dados para o gráfico 2
+    filtered_df_year = dash_df[(dash_df["Area"] == area_selected_2) & (dash_df["Item"] == item_selected_2)]
+
 
     
     fig2, ax3 = plt.subplots(figsize=(10, 6))
@@ -107,7 +99,7 @@ def page_1():
     ax3.legend(lines3 + lines4, labels3 + labels4, loc='upper right')
 
     
-    plt.title(f"Production, Area Harvested, and Yield in {area_selected2} for {item_selected2}")
+    plt.title(f"Production, Area Harvested, and Yield in {area_selected_2} for {item_selected_2}")
 
 
     

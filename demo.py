@@ -56,9 +56,9 @@ def page_1():
     with col3:
         area_selected_2 = st.selectbox("Select Area", dash_df["Area"].unique())
     with col4:
-        item_selected_2 = st.selectbox("Select Item", dash_df["Item"].unique())
+        item_selected
 
-    filtered_df_year = dash_df[(dash_df["Area"] == area_selected_2) & (dash_df["Item"] == item_selected_2)]
+    filtered_df_year = dash_df[(dash_df["Area"] == area_selected_2) & (dash_df["Item"] == item_selected)]
 
     # Segundo gráfico
     fig2, ax3 = plt.subplots(figsize=(10, 6))

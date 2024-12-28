@@ -59,7 +59,7 @@ def page_1():
     ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper right')
 
     
-    plt.title(f"Production, Area Harvested, and Yield in {area_selected} for {item_selected}")
+    plt.title(f"Production, Area Harvested, and Yield in {year_selected} for {item_selected}")
 
     
     fig.tight_layout()
@@ -107,7 +107,8 @@ def page_1():
     ax3.legend(lines3 + lines4, labels3 + labels4, loc='upper right')
 
     
-    plt.title(f"Production, Area Harvested, and Yield for {item_selected_2} Over the Years")
+    plt.title(f"Production, Area Harvested, and Yield in {area_selected2} for {item_selected2}")
+
 
     
     fig2.tight_layout()

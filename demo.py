@@ -20,8 +20,7 @@ def page_1():
 
     
     filtered_df = dash_df[(dash_df["Item"] == item_selected) & 
-                          (dash_df["Year"] == year_selected) &
-                          (dash_df["Area"] == area_selected)]
+                          (dash_df["Year"] == year_selected)]
 
     
     filtered_df_sorted = filtered_df.sort_values(by="Production", ascending=False)

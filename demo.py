@@ -29,7 +29,7 @@ def page_1():
     filtered_df_sorted = filtered_df.sort_values(by="Production", ascending=False)
 
     fig, ax1 = plt.subplots(figsize=(10, 6))
-    ax1.bar(filtered_df_sorted['Area'], filtered_df_sorted['Production'], color='green', label='Production')
+    ax1.bar(filtered_df_sorted['Area'], filtered_df_sorted['Production'], color='green', label='Production', alpha=0.8)
     ax1.bar(filtered_df_sorted['Area'], filtered_df_sorted['Area harvested'], color='darkorange', label='Area harvested')
     ax1.set_xlabel('Area')
     ax1.set_ylabel('Production / Area harvested')
@@ -63,7 +63,7 @@ def page_1():
 
     # País 1
     ax1 = axes[0]
-    ax1.bar(filtered_df_1['Year'], filtered_df_1['Production'], color='green', label='Production')
+    ax1.bar(filtered_df_1['Year'], filtered_df_1['Production'], color='green', label='Production', alpha=0.8)
     ax1.bar(filtered_df_1['Year'], filtered_df_1['Area harvested'], color='darkorange', label='Area harvested')
     ax1.set_xlabel("Year")
     ax1.set_ylabel("Production / Area harvested")
@@ -75,7 +75,7 @@ def page_1():
     
     # País 2
     ax3 = axes[1]
-    ax3.bar(filtered_df_2['Year'], filtered_df_2['Production'], color='green', label='Production')
+    ax3.bar(filtered_df_2['Year'], filtered_df_2['Production'], color='green', label='Production', alpha=0.8)
     ax3.bar(filtered_df_2['Year'], filtered_df_2['Area harvested'], color='darkorange', label='Area harvested')
     ax3.set_xlabel("Year")
     ax3.set_ylabel("Production / Area harvested")

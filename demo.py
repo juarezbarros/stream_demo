@@ -2,65 +2,88 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import plotly.express as px
-
 url = "https://raw.githubusercontent.com/juarezbarros/stream_demo/main/FAOSTAT_data_en_11-25-2024.csv"
 df_dash_eu_total = pd.read_csv(url)
 
-# Exibir os dados
-st.write(df_dash_eu_total)
 
-df_dash_eu_total = df_dash_eu_total[df_dash_eu_total['Item'].isin(['Barley', 'Wheat'])]
+def page_1():
+    st.title("Page 1: Production and Yield Data")
 
-dash_df = df_dash_eu_total.pivot_table(index=['Area', 'Year', 'Item'], columns='Element', values='Value', aggfunc='sum'
-).sort_values(by='Production', ascending=False).reset_index()
+    
+    area_selected = st.sidebar.selectbox("Select Area", df_dash_eu_total["Area"].unique())
+    item_selected = st.sidebar.selectbox("Select Item", df_dash_eu_total["Item"].unique())
 
-dash_df = dash_df.sort_values(by=['Area', 'Item', 'Year'])
+    
+    filtered_df = df_dash_eu_total[(df_dash_eu_total["Area"] == area_selected) & 
+                                   (df_dash_eu_total["Item"] == item_selected)]
 
-st.title("Agriculture Dashboard")
-pivoted_df = dash_df
+    
+    fig, ax1 = plt.subplots(figsize=(10, 6))
+
+    # 'Production' e 'Area harvested'
+    ax1.bar(filtered_df['Area'], filtered_df['Production'], color='green', label='Production')
+    ax1.bar(filtered_df['Area'], filtered_df['Area harvested'], color='darkorange', label='Area harvested')
+    ax1.set_xlabel('Country')
+    ax1.set_ylabel('Production / Area harvested')
+
+    
+    plt.xticks(rotation=45, ha='right')
+
+    #y  'Yield'
+    ax2 = ax1.twinx()
+    ax2.plot(filtered_df['Area'], filtered_df['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
+    ax2.set_ylabel('Yield')
+
+    
+    lines1, labels1 = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper right')
+
+    
+    plt.title(f"Production, Area Harvested, and Yield in {area_selected} for {item_selected}")
+
+    
+    fig.tight_layout()
+
+    
+    st.pyplot(fig)
+
+    
+    st.write("### Production, Area Harvested, and Yield by Year")
+    
+    # 'Item' e 'Area' 
+    filtered_df_year = df_dash_eu_total[(df_dash_eu_total["Item"] == item_selected)]
+
+    
+    fig2, ax3 = plt.subplots(figsize=(10, 6))
+
+    # 'Production'  'Area harvested' 
+    ax3.bar(filtered_df_year['Year'], filtered_df_year['Production'], color='green', label='Production')
+    ax3.bar(filtered_df_year['Year'], filtered_df_year['Area harvested'], color='darkorange', label='Area harvested')
+    ax3.set_xlabel('Year')
+    ax3.set_ylabel('Production / Area harvested')
+
+    # 
+    plt.xticks(rotation=45, ha='right')
+
+    # 'Yield'
+    ax4 = ax3.twinx()
+    ax4.plot(filtered_df_year['Year'], filtered_df_year['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
+    ax4.set_ylabel('Yield')
+
+    
+    lines3, labels3 = ax3.get_legend_handles_labels()
+    lines4, labels4 = ax4.get_legend_handles_labels()
+    ax3.legend(lines3 + lines4, labels3 + labels4, loc='upper right')
+
+    
+    plt.title(f"Production, Area Harvested, and Yield for {item_selected} Over the Years")
+
+    
+    fig2.tight_layout()
+
+    
+    st.pyplot(fig2)
 
 
-st.sidebar.title("Parameters")
-years = pivoted_df["Year"].unique()  # Obter anos únicos
-items = pivoted_df["Item"].unique()  # Obter itens únicos (ex: "Wheat", "Barley")
-
-year_selected = st.sidebar.selectbox("Select Year", years)
-item_selected = st.sidebar.selectbox("Select Item", items)
-
-
-df_filtered = pivoted_df[(pivoted_df["Year"] == year_selected) & (pivoted_df["Item"] == item_selected)]
-
-
-df_filtered = df_filtered.sort_values(by='Production', ascending=False)
-
-
-st.write(f"### Productio Data for the Year {year_selected} and Item {item_selected}", df_filtered)
-
-
-fig, ax1 = plt.subplots(figsize=(10, 6))
-
-
-ax1.bar(df_filtered['Area'], df_filtered['Production'], color='green', label='Production')
-ax1.bar(df_filtered['Area'], df_filtered['Area harvested'], color='darkorange', label='Area harvested')
-ax1.set_xlabel('Country')
-ax1.set_ylabel('Production / Area harvested')
-
-
-ax2 = ax1.twinx()
-ax2.plot(df_filtered['Area'], df_filtered['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
-ax2.set_ylabel('Yield')
-
-
-plt.xticks(rotation=90, ha='right', fontsize=10)
-
-
-lines1, labels1 = ax1.get_legend_handles_labels()
-lines2, labels2 = ax2.get_legend_handles_labels()
-ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper right')
-
-
-plt.title(f'Production, Area harvested e Yield per Year {year_selected} and Item {item_selected}')
-fig.tight_layout()  
-
-
-st.pyplot(fig)
+page_1()

@@ -1,3 +1,6 @@
+pip install -r requirements.txt
+streamlit run seu_script.py
+
 import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt

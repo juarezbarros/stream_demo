@@ -5,8 +5,10 @@ import plotly.express as px
 url = "https://raw.githubusercontent.com/juarezbarros/stream_demo/main/FAOSTAT_data_en_11-25-2024.csv"
 df_dash_eu_total = pd.read_csv(url)
 
-
-df_dash_eu_total.columns = df_dash_eu_total.columns.str.strip()
+df_dash_eu_total = df_dash_eu_total[df_dash_eu_total['Item'].isin(['Barley', 'Wheat'])]
+dash_df = df_dash_eu_total.pivot_table(index=['Area', 'Year', 'Item'], columns='Element', values='Value', aggfunc='sum'
+).sort_values(by='Production', ascending=False).reset_index()
+dash_df = dash_df.sort_values(by=['Area', 'Item', 'Year'])
 
 def page_1():
     st.title("Page 1: Production and Yield Data")
@@ -16,8 +18,8 @@ def page_1():
     item_selected = st.sidebar.selectbox("Select Item", df_dash_eu_total["Item"].unique())
 
     
-    filtered_df = df_dash_eu_total[(df_dash_eu_total["Area"] == area_selected) & 
-                                   (df_dash_eu_total["Item"] == item_selected)]
+    filtered_df = dash_df[(dash_df["Area"] == area_selected) & 
+                                   (dash_df["Item"] == item_selected)]
 
     
     st.write(filtered_df.head())

@@ -5,19 +5,15 @@ import plotly.express as px
 url = "FAOSTAT_data_en_11-25-2024.csv"
 df_dash_eu_total = pd.read_csv(url)
 
-# Verificar as primeiras linhas e colunas
-st.write(df_dash_eu_total.head())  # Exibir as primeiras linhas
-st.write(df_dash_eu_total.columns)  # Exibir as colunas do DataFrame
 
-# Substituir e filtrar dados
+
 df_dash_eu_total['Area'] = df_dash_eu_total['Area'].replace({'Netherlands (Kingdom of the)': 'Netherlands'})
 df_dash_eu_total = df_dash_eu_total[df_dash_eu_total['Item'].isin(['Barley', 'Wheat'])]
 
-# Criar pivot_table
+
 dash_df = df_dash_eu_total.pivot_table(index=['Area', 'Year', 'Item'], columns='Element', values='Value', aggfunc='sum').reset_index()
 dash_df = dash_df.sort_values(by=['Area', 'Item', 'Year'])
 
-# Definir a página de visualização
 def page_1():
     st.title("Page 1: Production and Yield Data")
 
@@ -31,7 +27,7 @@ def page_1():
     filtered_df = dash_df[(dash_df["Item"] == item_selected) & (dash_df["Year"] == year_selected)]
     filtered_df_sorted = filtered_df.sort_values(by="Production", ascending=False)
 
-    # Plotando o gráfico
+
     fig, ax1 = plt.subplots(figsize=(10, 6))
     ax1.bar(filtered_df_sorted['Area'], filtered_df_sorted['Production'], color='green', label='Production')
     ax1.bar(filtered_df_sorted['Area'], filtered_df_sorted['Area harvested'], color='darkorange', label='Area harvested')
@@ -51,7 +47,7 @@ def page_1():
     fig.tight_layout()
     st.pyplot(fig)
 
-    # Seletores para Área e Item
+
     col3, col4 = st.columns(2)
     with col3:
         area_selected_2 = st.selectbox("Select Area", dash_df["Area"].unique())
@@ -60,7 +56,6 @@ def page_1():
 
     filtered_df_year = dash_df[(dash_df["Area"] == area_selected_2) & (dash_df["Item"] == item_selected)]
 
-    # Segundo gráfico
     fig2, ax3 = plt.subplots(figsize=(10, 6))
     ax3.bar(filtered_df_year['Year'], filtered_df_year['Production'], color='green', label='Production')
     ax3.bar(filtered_df_year['Year'], filtered_df_year['Area harvested'], color='darkorange', label='Area harvested')
@@ -79,5 +74,33 @@ def page_1():
     plt.title(f"Production, Area Harvested, and Yield in {area_selected_2} for {item_selected}")
     fig2.tight_layout()
     st.pyplot(fig2)
+
+    def page_pie_chart():
+    st.title("Proportions by Country")
+
+    # Seletor de ano e item
+    col5, col6 = st.columns(2)
+    with col5:
+        year_selected
+    with col6:
+        item_selected
+
+    # Filtrar os dados
+    filtered_df = dash_df[(dash_df["Year"] == year_selected) & (dash_df["Item"] == item_selected)]
+
+    # Verificar se há dados
+    if filtered_df.empty:
+        st.warning("No data available for the selected year and item.")
+    else:
+        # Calcular proporção
+        filtered_df["Proportion"] = filtered_df["Production"] / filtered_df["Production"].sum()
+
+        # Gráfico de pizza
+        fig = px.pie(filtered_df, values="Proportion", names="Area",
+                     title=f"Proportion of Production by Country in {year_selected} for {item_selected}",
+                     labels={"Proportion": "Proportion"})
+        st.plotly_chart(fig)
+
+page_pie_chart()
 
 page_1()

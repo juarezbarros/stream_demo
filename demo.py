@@ -5,6 +5,7 @@ import plotly.express as px
 url = "https://raw.githubusercontent.com/juarezbarros/stream_demo/main/FAOSTAT_data_en_11-25-2024.csv"
 df_dash_eu_total = pd.read_csv(url)
 
+df_dash_eu_total['Area'] = df_dash_eu_total['Area'].replace({'Netherlands (Kingdom of the)': 'Netherlands'})
 df_dash_eu_total = df_dash_eu_total[df_dash_eu_total['Item'].isin(['Barley', 'Wheat'])]
 dash_df = df_dash_eu_total.pivot_table(index=['Area', 'Year', 'Item'], columns='Element', values='Value', aggfunc='sum'
 ).sort_values(by='Production', ascending=False).reset_index()
@@ -13,10 +14,20 @@ dash_df = dash_df.sort_values(by=['Area', 'Item', 'Year'])
 def page_1():
     st.title("Page 1: Production and Yield Data")
 
+
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        year_selected = st.selectbox("Select Year", dash_df["Year"].unique())
+
+    with col2:
+        item_selected = st.selectbox("Select Item", dash_df["Item"].unique())
+
+
    
-    area_selected = st.selectbox("Select Area for the First Graph", dash_df["Area"].unique())
-    item_selected = st.selectbox("Select Item for the First Graph", dash_df["Item"].unique())
-    year_selected = st.selectbox("Select Year for the First Graph", dash_df["Year"].unique())
+    #item_selected = st.selectbox("Select Item for the First Graph", dash_df["Item"].unique())
+    #year_selected = st.selectbox("Select Year for the First Graph", dash_df["Year"].unique())
 
     
     filtered_df = dash_df[(dash_df["Item"] == item_selected) & 
@@ -56,9 +67,18 @@ def page_1():
     
     st.pyplot(fig)
 
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        area_selected_2 = st.selectbox("Select Area", dash_df["Area"].unique())
+
+    with col2:
+        item_selected_2 = st.selectbox("Select Item", dash_df["Item"].unique())
+
     
-    area_selected_2 = st.selectbox("Select Area for the Second Graph", dash_df["Area"].unique())
-    item_selected_2 = st.selectbox("Select Item for the Second Graph", dash_df["Item"].unique())
+    #area_selected_2 = st.selectbox("Select Area for the Second Graph", dash_df["Area"].unique())
+    #item_selected_2 = st.selectbox("Select Item for the Second Graph", dash_df["Item"].unique())
     
     
     filtered_df_year = dash_df[(dash_df["Area"] == area_selected_2) & 

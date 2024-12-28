@@ -13,35 +13,37 @@ dash_df = dash_df.sort_values(by=['Area', 'Item', 'Year'])
 def page_1():
     st.title("Page 1: Production and Yield Data")
 
-    
-    area_selected = st.sidebar.selectbox("Select Area", dash_df["Area"].unique())
-    item_selected = st.sidebar.selectbox("Select Item", dash_df["Item"].unique())
-    year_selected = st.sidebar.selectbox("Select Item", dash_df["Year"].unique())
-    
-    filtered_df = dash_df[(dash_df["Item"] == item_selected)& 
-                                   (dash_df["Year"] == year_selected)]
+   
+    area_selected = st.selectbox("Select Area for the First Graph", dash_df["Area"].unique())
+    item_selected = st.selectbox("Select Item for the First Graph", dash_df["Item"].unique())
+    year_selected = st.selectbox("Select Year for the First Graph", dash_df["Year"].unique())
 
     
-    st.write(filtered_df.head())
+    filtered_df = dash_df[(dash_df["Item"] == item_selected) & 
+                          (dash_df["Year"] == year_selected) &
+                          (dash_df["Area"] == area_selected)]
+
+    
+    filtered_df_sorted = filtered_df.sort_values(by="Production", ascending=False)
 
     
     fig, ax1 = plt.subplots(figsize=(10, 6))
 
     
-    ax1.bar(filtered_df['Area'], filtered_df['Production'], color='green', label='Production')
-    ax1.bar(filtered_df['Area'], filtered_df['Area harvested'], color='darkorange', label='Area harvested')
+    ax1.bar(filtered_df_sorted['Area'], filtered_df_sorted['Production'], color='green', label='Production')
+    ax1.bar(filtered_df_sorted['Area'], filtered_df_sorted['Area harvested'], color='darkorange', label='Area harvested')
     ax1.set_xlabel('Country')
     ax1.set_ylabel('Production / Area harvested')
 
     
     plt.xticks(rotation=45, ha='right')
 
-   
+    
     ax2 = ax1.twinx()
-    ax2.plot(filtered_df['Area'], filtered_df['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
+    ax2.plot(filtered_df_sorted['Area'], filtered_df_sorted['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
     ax2.set_ylabel('Yield')
 
-    
+   
     lines1, labels1 = ax1.get_legend_handles_labels()
     lines2, labels2 = ax2.get_legend_handles_labels()
     ax1.legend(lines1 + lines2, labels1 + labels2, loc='upper right')
@@ -56,12 +58,12 @@ def page_1():
     st.pyplot(fig)
 
     
-    st.write("### Production, Area Harvested, and Yield by Year")
+    area_selected_2 = st.selectbox("Select Area for the Second Graph", dash_df["Area"].unique())
+    item_selected_2 = st.selectbox("Select Item for the Second Graph", dash_df["Item"].unique())
     
     
-    filtered_df_year = dash_df[(dash_df["Area"] == area_selected) & 
-                                   (dash_df["Item"] == item_selected)]
-
+    filtered_df_year = dash_df[(dash_df["Area"] == area_selected_2) & 
+                               (dash_df["Item"] == item_selected_2)]
 
     
     fig2, ax3 = plt.subplots(figsize=(10, 6))
@@ -75,7 +77,7 @@ def page_1():
     
     plt.xticks(rotation=45, ha='right')
 
-    # Criando o segundo eixo Y para 'Yield'
+    
     ax4 = ax3.twinx()
     ax4.plot(filtered_df_year['Year'], filtered_df_year['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
     ax4.set_ylabel('Yield')
@@ -86,7 +88,7 @@ def page_1():
     ax3.legend(lines3 + lines4, labels3 + labels4, loc='upper right')
 
     
-    plt.title(f"Production, Area Harvested, and Yield for {item_selected} Over the Years")
+    plt.title(f"Production, Area Harvested, and Yield for {item_selected_2} Over the Years")
 
     
     fig2.tight_layout()

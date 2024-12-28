@@ -76,6 +76,5 @@ def page_1():
     st.pyplot(fig2)
 
 
-page_pie_chart()
 
 page_1()

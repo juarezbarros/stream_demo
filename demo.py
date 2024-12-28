@@ -117,7 +117,7 @@ def page_pie_chart():
         st.plotly_chart(fig)
 
 # Configuração do Streamlit
-page = st.sidebar.radio("Select Page", ["Page 1", "Pie Chart"])
+page = st.sidebar.radio("Select Page", ["Historical Data", "Pie Chart"])
 
 if page == "Historical Data":
     page_1()

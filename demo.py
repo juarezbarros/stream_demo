@@ -47,7 +47,7 @@ def page_1():
     fig.tight_layout()
     st.pyplot(fig)
 
-    # Comparação de dois países
+   # Comparação de dois países
     st.subheader("Country Comparison")
     col3, col4 = st.columns(2)
     with col3:
@@ -58,25 +58,32 @@ def page_1():
     filtered_df_1 = dash_df[(dash_df["Area"] == country_1) & (dash_df["Item"] == item_selected)]
     filtered_df_2 = dash_df[(dash_df["Area"] == country_2) & (dash_df["Item"] == item_selected)]
 
-    # Criar gráficos lado a lado
+    # Criar gráficos lado a lado com duas escalas y
     fig, axes = plt.subplots(1, 2, figsize=(16, 6), sharey=True)
 
     # País 1
-    axes[0].bar(filtered_df_1['Year'], filtered_df_1['Production'], color='green', label='Production')
-    axes[0].bar(filtered_df_1['Year'], filtered_df_1['Area harvested'], color='darkorange', label='Area harvested')
-    axes[0].plot(filtered_df_1['Year'], filtered_df_1['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
-    axes[0].set_title(f"{country_1} - {item_selected}")
-    axes[0].set_xlabel("Year")
-    axes[0].set_ylabel("Values")
-    axes[0].legend()
+    ax1 = axes[0]
+    ax1.bar(filtered_df_1['Year'], filtered_df_1['Production'], color='green', label='Production')
+    ax1.bar(filtered_df_1['Year'], filtered_df_1['Area harvested'], color='darkorange', label='Area harvested')
+    ax1.set_xlabel("Year")
+    ax1.set_ylabel("Production / Area harvested")
+    ax1.legend()
 
+    ax2 = ax1.twinx()  # Adiciona o eixo Y para o Yield
+    ax2.plot(filtered_df_1['Year'], filtered_df_1['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
+    ax2.set_ylabel("Yield")
+    
     # País 2
-    axes[1].bar(filtered_df_2['Year'], filtered_df_2['Production'], color='green', label='Production')
-    axes[1].bar(filtered_df_2['Year'], filtered_df_2['Area harvested'], color='darkorange', label='Area harvested')
-    axes[1].plot(filtered_df_2['Year'], filtered_df_2['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
-    axes[1].set_title(f"{country_2} - {item_selected}")
-    axes[1].set_xlabel("Year")
-    axes[1].legend()
+    ax3 = axes[1]
+    ax3.bar(filtered_df_2['Year'], filtered_df_2['Production'], color='green', label='Production')
+    ax3.bar(filtered_df_2['Year'], filtered_df_2['Area harvested'], color='darkorange', label='Area harvested')
+    ax3.set_xlabel("Year")
+    ax3.set_ylabel("Production / Area harvested")
+    ax3.legend()
+
+    ax4 = ax3.twinx()  # Adiciona o eixo Y para o Yield
+    ax4.plot(filtered_df_2['Year'], filtered_df_2['Yield'], color='red', marker='o', label='Yield', linestyle='--', alpha=0.5)
+    ax4.set_ylabel("Yield")
 
     # Ajustar layout
     fig.suptitle(f"Comparison of {country_1} and {country_2} for {item_selected}")

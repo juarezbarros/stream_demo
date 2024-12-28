@@ -14,11 +14,12 @@ def page_1():
     st.title("Page 1: Production and Yield Data")
 
     
-    area_selected = st.sidebar.selectbox("Select Area", df_dash_eu_total["Area"].unique())
-    item_selected = st.sidebar.selectbox("Select Item", df_dash_eu_total["Item"].unique())
-
+    area_selected = st.sidebar.selectbox("Select Area", dash_df["Area"].unique())
+    item_selected = st.sidebar.selectbox("Select Item", dash_df["Item"].unique())
+    year_selected = st.sidebar.selectbox("Select Item", dash_df["Year"].unique())
     
-    filtered_df = dash_df[(dash_df["Item"] == item_selected)]
+    filtered_df = dash_df[(dash_df["Item"] == item_selected)& 
+                                   (dash_df["Year"] == year_selected)]
 
     
     st.write(filtered_df.head())
@@ -58,8 +59,8 @@ def page_1():
     st.write("### Production, Area Harvested, and Yield by Year")
     
     
-    filtered_df_year = dash_df[(df_dash_eu_total["Area"] == area_selected) & 
-                                   (df_dash_eu_total["Item"] == item_selected)]
+    filtered_df_year = dash_df[(dash_df["Area"] == area_selected) & 
+                                   (dash_df["Item"] == item_selected)]
 
 
     

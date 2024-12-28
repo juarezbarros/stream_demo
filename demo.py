@@ -24,10 +24,11 @@ def page_1():
     with col2:
         item_selected = st.selectbox("Select Item", dash_df["Item"].unique())
 
+    # Filtrar dados para o gráfico principal
     filtered_df = dash_df[(dash_df["Item"] == item_selected) & (dash_df["Year"] == year_selected)]
     filtered_df_sorted = filtered_df.sort_values(by="Production", ascending=False)
 
-
+    # Gráfico 1
     fig, ax1 = plt.subplots(figsize=(10, 6))
     ax1.bar(filtered_df_sorted['Area'], filtered_df_sorted['Production'], color='green', label='Production')
     ax1.bar(filtered_df_sorted['Area'], filtered_df_sorted['Area harvested'], color='darkorange', label='Area harvested')
@@ -47,14 +48,14 @@ def page_1():
     fig.tight_layout()
     st.pyplot(fig)
 
-
+    # Gráfico 2: Filtrar por área e item
     col3, col4 = st.columns(2)
     with col3:
         area_selected_2 = st.selectbox("Select Area", dash_df["Area"].unique())
     with col4:
-        item_selected
+        item_selected_2 = st.selectbox("Select Item", dash_df["Item"].unique())
 
-    filtered_df_year = dash_df[(dash_df["Area"] == area_selected_2) & (dash_df["Item"] == item_selected)]
+    filtered_df_year = dash_df[(dash_df["Area"] == area_selected_2) & (dash_df["Item"] == item_selected_2)]
 
     fig2, ax3 = plt.subplots(figsize=(10, 6))
     ax3.bar(filtered_df_year['Year'], filtered_df_year['Production'], color='green', label='Production')
@@ -71,10 +72,40 @@ def page_1():
     lines4, labels4 = ax4.get_legend_handles_labels()
     ax3.legend(lines3 + lines4, labels3 + labels4, loc='upper right')
 
-    plt.title(f"Production, Area Harvested, and Yield in {area_selected_2} for {item_selected}")
+    plt.title(f"Production, Area Harvested, and Yield in {area_selected_2} for {item_selected_2}")
     fig2.tight_layout()
     st.pyplot(fig2)
 
+# Página 2: Gráfico de pizza
+def page_pie_chart():
+    st.title("Proportions by Country")
 
+    # Seletor de ano e item
+    col5, col6 = st.columns(2)
+    with col5:
+        year_selected = st.selectbox("Select Year for Pie Chart", dash_df["Year"].unique())
+    with col6:
+        item_selected = st.selectbox("Select Item for Pie Chart", dash_df["Item"].unique())
 
-page_1()
+    # Filtrar os dados
+    filtered_df = dash_df[(dash_df["Year"] == year_selected) & (dash_df["Item"] == item_selected)]
+
+    # Verificar se há dados
+    if filtered_df.empty:
+        st.warning("No data available for the selected year and item.")
+    else:
+        # Calcular proporção
+        filtered_df["Proportion"] = filtered_df["Production"] / filtered_df["Production"].sum()
+
+        # Gráfico de pizza
+        fig = px.pie(filtered_df, values="Proportion", names="Area",
+                     title=f"Proportion of Production by Country in {year_selected} for {item_selected}",
+                     labels={"Proportion": "Proportion"})
+        st.plotly_chart(fig)
+
+# Configuração do Streamlit
+page = st.sidebar.radio("Select Page", ["Page 1", "Pie Chart"])
+if page == "Page 1":
+    page_1()
+elif page == "Pie Chart":
+    page_pie_chart()
